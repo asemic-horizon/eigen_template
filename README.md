@@ -23,17 +23,19 @@ print(add_matrices(A, B))
 
 You have two options:
 
-### (1) System-wide install (Linux/macOS)
+### (1) System-wide install
+
+This is the best option if your package is for local use only, or if you're using something like a Dockerfile that automates this.
 
 ```bash
-sudo apt install libeigen3-dev  # Debian/Ubuntu
-# OR on macOS (with Homebrew)
-brew install eigen
+sudo apt install libeigen3-dev  # Debian/Ubuntu-like
 ```
 
 Make sure Eigen headers are installed under `/usr/include/eigen3` or `/opt/homebrew/include/eigen3`.
 
-### (2) Vendored Eigen (portable)
+### (2) Vendored Eigen
+
+This is the best option if you want your package to be `pip install`able anywhere. Since Eigen is header-only, there's no building step (we just copy the files into our project)
 
 Clone Eigen into the `vendor/eigen/` directory:
 
@@ -42,15 +44,6 @@ mkdir -p vendor
 git clone --depth 1 https://gitlab.com/libeigen/eigen.git vendor/eigen
 ```
 
-You don’t need to build anything—Eigen is header-only.
+It's probably a good idea to acknowledge Eigen in your `LICENSE` file, e.g.
 
-Your structure should now look like:
-
-```
-vendor/
-└── eigen/
-    └── Eigen/
-        └── Core, Dense, ...
-```
-
-The build system will detect this automatically.
+```This project bundles the Eigen C++ template library (MPL2.0). See https://eigen.tuxfamily.org for details.```
