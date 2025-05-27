@@ -1,6 +1,20 @@
 # Eigen PyPI Template
 
-This is a minimal Python package using C++ and [Eigen](https://eigen.tuxfamily.org/) for matrix operations, exposed via [pybind11](https://github.com/pybind/pybind11). Note that 
+This is a minimal Python package using C++ and [Eigen](https://eigen.tuxfamily.org/) for matrix operations, exposed via [pybind11](https://github.com/pybind/pybind11). You can think of Eigen as a matrix-oriented DSL that's hosted in C++ but saves you the heartache of dealing with manual memory management. 
+
+When should you use this type of solution?
+
+* Problems are difficult or impossible to express in terms of NumPy/Jax/Pytorch etc. vectorized primitives
+* Data is large enough to make naive Python solutions impractical both in terms of memory and time.
+* Loop-oriented code is close to self-documenting.
+* There are some easy parallelization wins (think of computing correlation matrices) that you can hang on loops using OpenMP
+
+When shouldn't you use this?
+
+* Vibecoding. Even with Eigen, C++ is still dangerous enough to be dangerous if you don't know what you're doing, and error messages may not be traceable to deep causes.
+* Your problem space is a better fit for out-of-core map/reduce-y solutions.
+* Your problems are massively parallel enough that you'd benefit from using the GPU
+* This README and its examples are not very clear to you.  
 
 ## Usage in Python
 
@@ -31,7 +45,7 @@ Eigen::MatrixXd add_matrices(const Eigen::MatrixXd& A,
 }
 ```
 
-Included in this project template are some utility functions to populate matrices from functions of matrix columns. For example, if you define the correlation coefficient as
+Included in this project template are some OpenMP-enabled utility functions to populate matrices from functions of matrix columns. For example, if you define the correlation coefficient as
 
 ```cpp
 double corr_coeff(const Eigen::VectorXd& x, const Eigen::VectorXd& y) {
@@ -58,7 +72,7 @@ Eigen::MatrixXd correlation_matrix(const Eigen::MatrixXd& X) {
 }
 ```
 
-(You should explore )
+(You should explore [core.cpp](eigen_pypi_template/core.cpp) to see how these utilities are defined.)
 
 ## Installing Eigen
 
