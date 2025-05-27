@@ -1,6 +1,7 @@
 #include <pybind11/pybind11.h>
 #include <pybind11/eigen.h>
 #include <Eigen/Dense>
+#include "utils.hpp"
 
 Eigen::MatrixXd add_matrices(const Eigen::MatrixXd& A, const Eigen::MatrixXd& B) {
     return A + B;
